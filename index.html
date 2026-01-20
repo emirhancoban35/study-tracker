@@ -6,9 +6,12 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzExMTExMSIvPjxyZWN0IHg9IjEyOCIgeT0iMTI4IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNjc2IiBzdHJva2Utd2lkdGg9IjMyIi8+PHBhdGggZD0iTTM1NiAxOTIgTDIzNiAzMjAgMTU2IDI0MCIgc3Ryb2tlPSIjMDBlNjc2IiBzdHJva2Utd2lkdGg9IjMyIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=">
-    <title>DGS LIFE OS v5.3</title>
+    <meta name="theme-color" content="#050505">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23050505' rx='100' ry='100'/%3E%3Cpath d='M256 86C162.1 86 86 162.1 86 256s76.1 170 170 170c93.9 0 170-76.1 170-170' stroke='%2300e676' stroke-width='45' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='256' r='70' fill='%2300e676'/%3E%3Ccircle cx='390' cy='120' r='25' fill='%23d500f9'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23050505' rx='100' ry='100'/%3E%3Cpath d='M256 86C162.1 86 86 162.1 86 256s76.1 170 170 170c93.9 0 170-76.1 170-170' stroke='%2300e676' stroke-width='45' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='256' r='70' fill='%2300e676'/%3E%3Ccircle cx='390' cy='120' r='25' fill='%23d500f9'/%3E%3C/svg%3E">
+    
+    <title>Study Tracker</title>
     
     <style>
         /* 🌌 SYSTEM THEME: DEEP SPACE & NEON */
@@ -27,11 +30,15 @@
             --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --radius: 16px;
             --shadow: 0 8px 30px rgba(0,0,0,0.5);
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
         /* RESET & BASE */
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: var(--bg-body); color: var(--text-main); font-family: var(--font); min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; }
+        
+        /* 🧭 FIX: INCREASED BOTTOM PADDING FOR SCROLL SAFETY */
+        body { background: var(--bg-body); color: var(--text-main); font-family: var(--font); min-height: 100vh; overflow-x: hidden; padding-bottom: calc(120px + var(--safe-bottom)); }
+        
         .hidden { display: none !important; }
         .container { padding: 16px; max-width: 600px; margin: 0 auto; }
         .flex-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -43,6 +50,23 @@
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .card-title { font-weight: 700; font-size: 0.95rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
         
+        /* 🎨 HEADER & LOGO STYLES */
+        .app-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 0 4px; }
+        .app-logo-box { width: 42px; height: 42px; }
+        .app-brand { display: flex; flex-direction: column; justify-content: center; }
+        .app-title { font-size: 1.1rem; font-weight: 900; letter-spacing: -0.5px; line-height: 1; color: #fff; }
+        .app-ver { font-size: 0.7rem; color: var(--primary); letter-spacing: 1px; font-weight: bold; margin-top: 2px; }
+
+        /* 🎨 SPLASH SCREEN */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease;
+        }
+        .splash-icon { width: 120px; height: 120px; animation: splashPulse 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @keyframes splashPulse { 0% { transform: scale(0.8); opacity: 0; } 50% { opacity: 1; } 100% { transform: scale(1.1); } }
+
         .hud { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
         .hud-item { background: var(--bg-panel); border-radius: 12px; padding: 10px; text-align: center; border-bottom: 2px solid transparent; }
         .hud-val { font-size: 1.1rem; font-weight: 900; display: block; }
@@ -62,7 +86,26 @@
         svg { width: 100%; height: 100%; overflow: visible; }
         polyline { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
         
-        .nav-dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 420px; background: rgba(26,26,26,0.95); backdrop-filter: blur(12px); border-radius: 24px; display: flex; justify-content: space-between; padding: 10px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 100; border: 1px solid rgba(255,255,255,0.1); }
+        /* 🧭 FIX: BOTTOM NAV POSITION & SAFE AREA */
+        .nav-dock { 
+            position: fixed; 
+            bottom: 20px; /* Fallback */
+            bottom: calc(15px + env(safe-area-inset-bottom)); /* iOS Safe Area */
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 95%; 
+            max-width: 420px; 
+            background: rgba(26,26,26,0.95); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px; 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 12px 20px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
+            z-index: 999; /* Higher z-index */
+            border: 1px solid rgba(255,255,255,0.08); 
+        }
         .nav-icon { font-size: 1.4rem; opacity: 0.5; transition: 0.2s; transform: scale(0.9); display: block; margin-bottom: 2px;}
         .nav-item { flex: 1; text-align: center; font-size: 0.6rem; color: #888; }
         .nav-item.active .nav-icon { opacity: 1; transform: scale(1.1); text-shadow: 0 0 10px rgba(255,255,255,0.3); color: var(--primary); }
@@ -126,6 +169,17 @@
 </head>
 <body>
 
+<div id="splash-screen">
+    <div class="splash-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <rect width="512" height="512" fill="#050505" rx="100" ry="100"/>
+          <path d="M256 86C162.1 86 86 162.1 86 256s76.1 170 170 170c93.9 0 170-76.1 170-170" stroke="#00e676" stroke-width="45" fill="none" stroke-linecap="round"/>
+          <circle cx="256" cy="256" r="70" fill="#00e676"/>
+          <circle cx="390" cy="120" r="25" fill="#d500f9"/>
+        </svg>
+    </div>
+</div>
+
 <div id="onboarding" class="modal hidden">
     <h1>Yeni Başlangıç</h1>
     <p>Geçmiş geride kaldı. Bugün DGS için yeni bir sayfa açıyoruz. <br><br>Bu sistem senin disiplin motorun olacak.</p>
@@ -134,6 +188,21 @@
 
 <div class="container">
     
+    <div class="app-header">
+        <div class="app-logo-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <rect width="512" height="512" fill="#050505" rx="100" ry="100"/>
+              <path d="M256 86C162.1 86 86 162.1 86 256s76.1 170 170 170c93.9 0 170-76.1 170-170" stroke="#00e676" stroke-width="45" fill="none" stroke-linecap="round"/>
+              <circle cx="256" cy="256" r="70" fill="#00e676"/>
+              <circle cx="390" cy="120" r="25" fill="#d500f9"/>
+            </svg>
+        </div>
+        <div class="app-brand">
+            <div class="app-title">Study Tracker</div>
+            <div class="app-ver">PRO </div>
+        </div>
+    </div>
+
     <div class="hud">
         <div class="hud-item" style="border-color: var(--danger)">
             <span class="hud-val" id="hud-streak">0</span>
@@ -153,7 +222,7 @@
         
         <div class="card" id="ai-card">
             <div class="card-header">
-                <span class="card-title" style="color:var(--purple)">🤖 DGS AI Koç</span>
+                <span class="card-title" style="color:var(--purple)">🤖 AI Koç</span>
                 <span style="font-size:0.7rem; background:rgba(213,0,249,0.2); color:var(--purple); padding:2px 6px; border-radius:4px;">LIVE</span>
             </div>
             <div class="ai-msg" id="ai-message">Veriler analiz ediliyor...</div>
@@ -540,6 +609,7 @@ var State = {
 
         if(this.data.today.date !== now) {
             if(this.data.today.date) {
+                // Archive yesterday
                 var status = this.data.today.completed ? 'hit' : (this.data.today.frozen ? 'freeze' : 'miss');
                 this.data.history[this.data.today.date] = {
                     status: status,
@@ -881,7 +951,7 @@ var App = {
     }
 };
 
-/* --- ☁️ DATA MANAGER --- */
+/* --- ☁️ DATA MANAGER (UTF-8 SAFE) --- */
 var DataMgr = {
     backup: function() {
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(State.data));
@@ -1104,11 +1174,15 @@ var UI = {
         var w = con.clientWidth;
         var h = con.clientHeight;
         
-        // Dynamic Graph Scaling based on Primary Goal
-        var max = 70; 
-        if (State.data.user.goals.length > 0) max = State.data.user.goals[0].net;
+        // 🔧 BUG FIX: Handle NaN targetNet
+        // Since goal system replaced targetNet, we fetch the primary goal's net.
+        var targetNet = (State.data.user.goals && State.data.user.goals.length > 0) ? State.data.user.goals[0].net : 100;
         
-        exams.forEach(function(e){ if(e.total > max) max = e.total; });
+        var max = 0; exams.forEach(function(e){ if(e.total > max) max = e.total; });
+        max = Math.max(max, targetNet);
+        // Avoid division by zero
+        if (max === 0) max = 100;
+
         var points = "";
         
         exams.forEach(function(e, i) {
@@ -1117,7 +1191,10 @@ var UI = {
             points += x + "," + y + " ";
         });
         
-        con.innerHTML = '<svg><polyline points="' + points + '" stroke="var(--primary)" fill="none"/><polyline points="0,' + (h - (State.data.user.targetNet/max)*h) + ' ' + w + ',' + (h - (State.data.user.targetNet/max)*h) + '" stroke="var(--purple)" stroke-dasharray="4" opacity="0.5"/></svg>';
+        // Calculate Y position for the target line
+        var targetY = h - ((targetNet / max) * h);
+        
+        con.innerHTML = '<svg><polyline points="' + points + '" stroke="var(--primary)" fill="none"/><polyline points="0,' + targetY + ' ' + w + ',' + targetY + '" stroke="var(--purple)" stroke-dasharray="4" opacity="0.5"/></svg>';
     },
 
     drawCalendar: function() {
@@ -1164,6 +1241,17 @@ var UI = {
         t.style.borderColor = type === 'err' ? 'var(--danger)' : '#444';
         t.classList.add('visible');
         setTimeout(function(){ t.classList.remove('visible'); }, 3000);
+    },
+    
+    // 🎨 NEW: SPLASH REMOVAL LOGIC
+    removeSplash: function() {
+        setTimeout(function(){
+            var s = document.getElementById('splash-screen');
+            if(s) {
+                s.style.opacity = '0';
+                setTimeout(function(){ s.remove(); }, 600);
+            }
+        }, 1200);
     }
 };
 
@@ -1205,13 +1293,19 @@ var link = document.createElement('link');
 link.rel = 'manifest';
 var manifest = {
     name: "DGS Life OS", short_name: "DGS OS", start_url: ".", display: "standalone",
-    background_color: "#000000", theme_color: "#000000",
-    icons: [{ src: "https://cdn-icons-png.flaticon.com/512/2997/2997235.png", sizes: "192x192", type: "image/png" }]
+    background_color: "#050505", theme_color: "#050505",
+    icons: [
+        { src: "https://cdn-icons-png.flaticon.com/512/2997/2997235.png", sizes: "192x192", type: "image/png" }
+    ]
 };
 link.href = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(manifest))));
 document.head.appendChild(link);
 
-window.onload = function() { State.init(); UI.render(); };
+window.onload = function() { 
+    State.init(); 
+    UI.render();
+    UI.removeSplash(); // Trigger splash removal
+};
 </script>
 </body>
 </html>
