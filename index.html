@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2997/2997235.png"> <title>DGS LIFE OS v5.0</title>
+    
+    <style>
+        /* 🌌 SYSTEM THEME: DEEP SPACE & NEON */
+        :root {
+            --bg-body: #050505;
+            --bg-card: #111111;
+            --bg-panel: #1a1a1a;
+            --primary: #00e676; /* Math */
+            --secondary: #2979ff; /* Turkish */
+            --tertiary: #ff9100; /* Paragraf (NEW) */
+            --danger: #ff1744; /* Alert/Break */
+            --gold: #ffc400; /* Economy */
+            --purple: #d500f9; /* AI/Books */
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius: 16px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        /* RESET & BASE */
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { background: var(--bg-body); color: var(--text-main); font-family: var(--font); min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; }
+        
+        /* 📱 LAYOUT UTILS */
+        .hidden { display: none !important; }
+        .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+        .flex-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .flex-col { display: flex; flex-direction: column; gap: 12px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        
+        /* 🎴 CARDS */
+        .card { background: var(--bg-card); border-radius: var(--radius); padding: 16px; border: 1px solid #222; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .card-title { font-weight: 700; font-size: 0.95rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+        
+        /* 💎 STAT HEADER */
+        .hud { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+        .hud-item { background: var(--bg-panel); border-radius: 12px; padding: 10px; text-align: center; border-bottom: 2px solid transparent; }
+        .hud-val { font-size: 1.1rem; font-weight: 900; display: block; }
+        .hud-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+        
+        /* 🤖 AI & GOALS */
+        .ai-msg { background: rgba(213, 0, 249, 0.1); border-left: 3px solid var(--purple); padding: 10px; font-size: 0.85rem; color: #e0e0e0; border-radius: 4px; line-height: 1.4; margin-bottom: 10px; }
+        .goal-bar { height: 6px; background: #222; border-radius: 3px; overflow: hidden; margin-top: 5px; }
+        .goal-fill { height: 100%; transition: width 0.5s ease; }
+        
+        /* ⏱️ FOCUS MODE */
+        .focus-ring { width: 200px; height: 200px; border-radius: 50%; border: 4px solid #222; margin: 20px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; transition: 0.3s; }
+        .focus-ring.active { border-color: var(--primary); box-shadow: 0 0 40px rgba(0, 230, 118, 0.2); }
+        .timer-val { font-size: 3.5rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -2px; }
+        .timer-state { font-size: 0.8rem; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; opacity: 0; }
+        .focus-ring.active .timer-state { opacity: 1; animation: pulse 1.5s infinite; }
+        
+        /* 📈 GRAPHS */
+        .graph-container { height: 100px; width: 100%; position: relative; border-bottom: 1px solid #333; border-left: 1px solid #333; margin-top: 10px; }
+        svg { width: 100%; height: 100%; overflow: visible; }
+        polyline { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+        
+        /* 🧭 NAVIGATION */
+        .nav-dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 420px; background: rgba(26,26,26,0.95); backdrop-filter: blur(12px); border-radius: 24px; display: flex; justify-content: space-between; padding: 10px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 100; border: 1px solid rgba(255,255,255,0.1); }
+        .nav-icon { font-size: 1.4rem; opacity: 0.5; transition: 0.2s; transform: scale(0.9); display: block; margin-bottom: 2px;}
+        .nav-item { flex: 1; text-align: center; font-size: 0.6rem; color: #888; }
+        .nav-item.active .nav-icon { opacity: 1; transform: scale(1.1); text-shadow: 0 0 10px rgba(255,255,255,0.3); color: var(--primary); }
+        .nav-item.active { color: #fff; }
+        
+        /* 🧩 INPUTS & BUTTONS */
+        button { border: none; cursor: pointer; font-family: var(--font); }
+        .btn-main { background: var(--primary); color: #000; width: 100%; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        .btn-main.stop { background: var(--danger); color: #fff; }
+        .btn-small { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; background: #333; color: #fff; }
+        .input-dark { background: #000; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; width: 100%; font-size: 0.9rem; }
+        
+        /* 📅 CALENDAR */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
+        .cal-cell { aspect-ratio: 1; border-radius: 4px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; background: #1a1a1a; color: #555; position: relative; }
+        .cal-cell.today { border: 1px solid #fff; }
+        .cal-cell.hit { background: rgba(0, 230, 118, 0.2); color: var(--primary); }
+        .cal-cell.miss { background: rgba(255, 23, 68, 0.1); color: var(--danger); }
+        .cal-cell.freeze { background: rgba(41, 121, 255, 0.2); color: var(--secondary); }
+        
+        /* 📚 TOPIC TRACKING (UPDATED) */
+        .topic-item { background: #161616; padding: 12px; border-radius: 12px; margin-bottom: 8px; border-left: 3px solid #333; transition: 0.2s; }
+        .topic-item.done { border-left-color: var(--primary); opacity: 0.8; }
+        .topic-item.in-progress { border-left-color: var(--gold); }
+        .topic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .topic-name { font-size: 0.9rem; font-weight: 600; }
+        .topic-controls { display: flex; gap: 5px; align-items: center; }
+        .topic-input { width: 50px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; padding: 4px; text-align: center; font-size: 0.8rem; }
+        .topic-add-btn { background: #333; color: var(--primary); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .topic-check-btn { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #444; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; margin-left: 5px; cursor: pointer; }
+        .topic-item.done .topic-check-btn { background: var(--primary); border-color: var(--primary); color: #000; }
+
+        /* 🎖️ MEDALS (NEW) */
+        .medal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .medal-card { background: #161616; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #222; opacity: 0.5; filter: grayscale(1); transition: 0.3s; }
+        .medal-card.unlocked { opacity: 1; filter: grayscale(0); border-color: var(--gold); background: rgba(255, 193, 7, 0.05); }
+        .medal-icon { font-size: 2rem; margin-bottom: 5px; display: block; }
+        .medal-title { font-size: 0.8rem; font-weight: bold; color: #fff; }
+        .medal-desc { font-size: 0.65rem; color: #888; margin-top: 2px; }
+
+        /* 🏆 MISSIONS */
+        .mission-item { background: #0a0a0a; border: 1px solid #222; padding: 10px; border-radius: 8px; margin-bottom: 8px; }
+        .mission-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; }
+        .mission-bar { height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .mission-fill { height: 100%; background: var(--gold); transition: width 0.3s; }
+        
+        /* 🚀 ONBOARDING MODAL */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; backdrop-filter: blur(10px); }
+        .modal.hidden { display: none; }
+        .modal h1 { font-size: 2rem; color: var(--primary); margin-bottom: 20px; }
+        .modal p { color: #ccc; margin-bottom: 30px; line-height: 1.5; }
+
+        /* ⚙️ SETTINGS */
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
+        .setting-label { font-size: 0.9rem; }
+        .setting-group { margin-top: 20px; }
+        .setting-group-title { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+
+        /* ANIMATIONS */
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+        
+        /* 🔔 TOAST */
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: #222; border: 1px solid #444; padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 10px; opacity: 0; transition: 0.3s; z-index: 3000; pointer-events: none; }
+        .toast.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div id="onboarding" class="modal hidden">
+    <h1>Yeni Başlangıç</h1>
+    <p>Geçmiş geride kaldı. Bugün DGS için yeni bir sayfa açıyoruz. <br><br>Bu sistem senin disiplin motorun olacak.</p>
+    <button class="btn-main" onclick="UI.closeOnboarding()">HAZIRIM 🔥</button>
+</div>
+
+<div class="container">
+    
+    <div class="hud">
+        <div class="hud-item" style="border-color: var(--danger)">
+            <span class="hud-val" id="hud-streak">0</span>
+            <span class="hud-lbl">🔥 Zincir</span>
+        </div>
+        <div class="hud-item" style="border-color: var(--gold)">
+            <span class="hud-val" id="hud-diamonds">0</span>
+            <span class="hud-lbl">💎 Elmas</span>
+        </div>
+        <div class="hud-item" style="border-color: var(--primary)">
+            <span class="hud-val" id="hud-xp">0</span>
+            <span class="hud-lbl">🏆 XP</span>
+        </div>
+    </div>
+
+    <div id="view-dash" class="view">
+        
+        <div class="card" id="ai-card">
+            <div class="card-header">
+                <span class="card-title" style="color:var(--purple)">🤖 DGS AI Koç</span>
+                <span style="font-size:0.7rem; background:rgba(213,0,249,0.2); color:var(--purple); padding:2px 6px; border-radius:4px;">LIVE</span>
+            </div>
+            <div class="ai-msg" id="ai-message">Veriler analiz ediliyor...</div>
+            
+            <div style="display: flex; gap: 5px; margin-top: 10px;">
+                <div style="flex:1; background:#000; padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.7rem; color:#666;">HAZIRLIK SKORU</div>
+                    <div style="font-weight:bold; color:var(--primary); font-size:1.1rem;" id="ai-score">0%</div>
+                </div>
+                <div style="flex:1; background:#000; padding:8px; border-radius:8px; text-align:center;">
+                    <div style="font-size:0.7rem; color:#666;">KALAN GÜN</div>
+                    <div style="font-weight:bold; color:#fff; font-size:1.1rem;" id="ai-days">0</div>
+                </div>
+            </div>
+
+            <div id="smart-recommendation" style="margin-top:10px; padding-top:10px; border-top:1px solid #222;">
+                <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">🚀 Akıllı Öneri</div>
+                <div style="color:#fff; font-weight:bold; margin-top:2px;" id="rec-text">...</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+            <div class="card-header"><span class="card-title">🎖️ Haftalık Görevler</span></div>
+            <div id="missions-list"></div>
+        </div>
+
+        <div class="card" style="text-align:center; margin-top:12px;">
+            <div class="card-header"><span class="card-title">⏱️ Odak Modu</span></div>
+            <div class="focus-ring" id="focus-ui">
+                <div class="timer-val" id="timer-disp">00:00</div>
+                <div class="timer-state">ODAKLAN</div>
+            </div>
+            <button class="btn-main" id="btn-timer" onclick="App.toggleFocus()">BAŞLAT</button>
+            <div style="margin-top:8px; font-size:0.7rem; color:#444;">Manuel giriş yasaktır.</div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+            <div class="card-header">
+                <span class="card-title">📅 Günlük Hedefler</span>
+                <button onclick="App.tryFreeze()" style="background:none; color:var(--secondary); font-size:0.8rem;">❄️ Dondur</button>
+            </div>
+            
+            <div class="flex-col">
+                <div>
+                    <div class="flex-row" style="font-size:0.8rem;">
+                        <span>⏱️ Süre</span>
+                        <span id="prog-txt-time" style="color:var(--primary)">0/120 dk</span>
+                    </div>
+                    <div class="goal-bar"><div class="goal-fill" id="fill-time" style="width:0%; background:var(--primary)"></div></div>
+                </div>
+                <div>
+                    <div class="flex-row" style="font-size:0.8rem;">
+                        <span>✖️ Matematik</span>
+                        <span id="prog-txt-mat" style="color:var(--primary)">0/50</span>
+                    </div>
+                    <div class="goal-bar"><div class="goal-fill" id="fill-mat" style="width:0%; background:var(--primary)"></div></div>
+                    <div class="flex-row" style="margin-top:4px;">
+                        <input type="number" id="inp-mat" class="input-dark" placeholder="Adet" style="padding:4px; font-size:0.8rem;">
+                        <button onclick="App.addQ('math')" style="background:#222; color:var(--primary); padding:4px 10px; border-radius:6px;">+</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex-row" style="font-size:0.8rem;">
+                        <span>💬 Türkçe (Dil Bilgisi)</span>
+                        <span id="prog-txt-tr" style="color:var(--secondary)">0/30</span>
+                    </div>
+                    <div class="goal-bar"><div class="goal-fill" id="fill-tr" style="width:0%; background:var(--secondary)"></div></div>
+                    <div class="flex-row" style="margin-top:4px;">
+                        <input type="number" id="inp-tr" class="input-dark" placeholder="Adet" style="padding:4px; font-size:0.8rem;">
+                        <button onclick="App.addQ('tr')" style="background:#222; color:var(--secondary); padding:4px 10px; border-radius:6px;">+</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex-row" style="font-size:0.8rem;">
+                        <span>📑 Paragraf</span>
+                        <span id="prog-txt-par" style="color:var(--tertiary)">0/20</span>
+                    </div>
+                    <div class="goal-bar"><div class="goal-fill" id="fill-par" style="width:0%; background:var(--tertiary)"></div></div>
+                    <div class="flex-row" style="margin-top:4px;">
+                        <input type="number" id="inp-par" class="input-dark" placeholder="Adet" style="padding:4px; font-size:0.8rem;">
+                        <button onclick="App.addQ('par')" style="background:#222; color:var(--tertiary); padding:4px 10px; border-radius:6px;">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-topics" class="view hidden">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📚 Konu İlerlemesi</span>
+            </div>
+            
+            <div class="grid-3" style="margin-bottom:15px;">
+                <div style="background:#000; padding:8px; border-radius:8px; border:1px solid #222; text-align:center;">
+                    <div style="font-size:0.6rem; color:#888;">MATEMATİK</div>
+                    <div style="font-size:1rem; font-weight:bold; color:var(--primary);" id="stat-mat-pct">0%</div>
+                </div>
+                <div style="background:#000; padding:8px; border-radius:8px; border:1px solid #222; text-align:center;">
+                    <div style="font-size:0.6rem; color:#888;">TÜRKÇE</div>
+                    <div style="font-size:1rem; font-weight:bold; color:var(--secondary);" id="stat-tr-pct">0%</div>
+                </div>
+                <div style="background:#000; padding:8px; border-radius:8px; border:1px solid #222; text-align:center;">
+                    <div style="font-size:0.6rem; color:#888;">PARAGRAF</div>
+                    <div style="font-size:1rem; font-weight:bold; color:var(--tertiary);" id="stat-par-pct">0%</div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:10px; display:flex; gap:5px;">
+                <button class="btn-small" onclick="Topics.filter('mat')" style="flex:1;">Mat</button>
+                <button class="btn-small" onclick="Topics.filter('tr')" style="flex:1;">Tr</button>
+                <button class="btn-small" onclick="Topics.filter('par')" style="flex:1;">Par</button>
+            </div>
+
+            <div id="topics-list"></div>
+        </div>
+    </div>
+
+    <div id="view-stats" class="view hidden">
+        <div class="card">
+            <div class="card-header"><span class="card-title">📝 Deneme Takibi</span></div>
+            <div class="grid-2">
+                <input type="number" id="exam-mat" class="input-dark" placeholder="Mat Net">
+                <input type="number" id="exam-tr" class="input-dark" placeholder="Tr Net">
+            </div>
+            <button class="btn-main" style="background:var(--secondary); color:#fff; margin-top:8px; font-size:0.9rem;" onclick="App.addExam()">Deneme Kaydet</button>
+            <div class="graph-container" id="net-graph"></div>
+            <div class="flex-row" style="font-size:0.7rem; color:var(--text-muted); margin-top:5px;">
+                <span>Son 5 Deneme Trendi</span>
+                <span id="trend-val">--</span>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+            <div class="card-header"><span class="card-title">📖 Kitap Okuma</span></div>
+            <div class="flex-row">
+                <input type="text" id="book-name" class="input-dark" placeholder="Kitap Adı">
+                <input type="number" id="book-pages" class="input-dark" placeholder="Sayfa" style="width:80px">
+            </div>
+            <button class="btn-main" style="background:var(--purple); color:#fff; margin-top:8px; font-size:0.9rem;" onclick="App.addBook()">Okuma Ekle (+XP)</button>
+            <div id="book-list" class="flex-col" style="margin-top:10px; font-size:0.8rem; color:#aaa;"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+            <div class="card-header"><span class="card-title">📅 Süreklilik</span></div>
+            <div style="font-size:0.7rem; color:#666; margin-bottom:5px;">Detay için güne tıkla.</div>
+            <div class="cal-grid" id="cal-render"></div>
+        </div>
+    </div>
+
+    <div id="view-medals" class="view hidden">
+        <div class="card">
+            <div class="card-header"><span class="card-title">🎖️ Başarı Rozetleri</span></div>
+            <div class="medal-grid" id="medal-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="view-profile" class="view hidden">
+        <div class="card">
+            <div class="card-header"><span class="card-title">👤 Öğrenci Profili</span></div>
+            <div class="flex-col">
+                <input type="text" id="prof-name" class="input-dark" placeholder="Adın" onchange="Profile.save()">
+                <input type="text" id="prof-target" class="input-dark" placeholder="Hedef Üniversite / Bölüm" onchange="Profile.save()">
+                <div class="flex-row">
+                    <input type="number" id="prof-net" class="input-dark" placeholder="Hedef Net" onchange="Profile.save()">
+                    <div style="font-size:0.8rem; color:#666; padding:10px;">Net Hedefi</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:12px; border-color:var(--gold);">
+            <div class="card-header"><span class="card-title" style="color:var(--gold);">☁️ Bulut Senkronizasyon</span></div>
+            <p style="font-size:0.75rem; color:#aaa; margin-bottom:10px;">Verilerini cihazlar arası taşımak için kodu kopyala.</p>
+            <div class="setting-row">
+                <button class="btn-small" style="width:100%;" onclick="DataMgr.copySyncCode()">📤 Veri Kodunu Kopyala</button>
+            </div>
+            <div class="flex-row" style="margin-top:10px;">
+                <input type="text" id="sync-input" class="input-dark" placeholder="Veri kodunu buraya yapıştır...">
+                <button class="btn-small" onclick="DataMgr.loadSyncCode()">📥 Yükle</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+            <div class="card-header"><span class="card-title">⚙️ Ayarlar</span></div>
+            <div class="setting-row">
+                <span class="setting-label">🔔 Bildirimler</span>
+                <button class="btn-small" onclick="Notify.req()">İzin Ver</button>
+            </div>
+            <div class="setting-row" style="border-bottom:none;">
+                <span class="setting-label" style="color:var(--danger)">⚠️ Sıfırla</span>
+                <button class="btn-small" style="background:var(--danger);" onclick="DataMgr.reset()">Reset</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+            <div class="card-header"><span class="card-title">🛒 Market</span></div>
+            <div class="grid-2">
+                <div class="card" style="border:1px solid #333; padding:10px; text-align:center;">
+                    <div style="font-size:2rem;">🛡️</div>
+                    <div style="font-weight:bold; font-size:0.9rem;">Freeze</div>
+                    <div style="color:var(--gold); font-size:0.8rem;">500 💎</div>
+                    <button onclick="Shop.buy('freeze')" style="width:100%; background:#222; color:#fff; padding:6px; margin-top:5px; border-radius:6px;">AL</button>
+                </div>
+                <div class="card" style="border:1px solid #333; padding:10px; text-align:center;">
+                    <div style="font-size:2rem;">⚡</div>
+                    <div style="font-weight:bold; font-size:0.9rem;">2x XP</div>
+                    <div style="color:var(--gold); font-size:0.8rem;">300 💎</div>
+                    <button onclick="Shop.buy('boost')" style="width:100%; background:#222; color:#fff; padding:6px; margin-top:5px; border-radius:6px;">AL</button>
+                </div>
+            </div>
+            <div style="margin-top:10px; font-size:0.8rem; color:#aaa; text-align:center;">
+                🎒 Çanta: <span id="inv-display">Boş</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="nav-dock">
+    <div class="nav-item active" onclick="Nav.go('dash')">
+        <span class="nav-icon">🏠</span>Ana
+    </div>
+    <div class="nav-item" onclick="Nav.go('topics')">
+        <span class="nav-icon">📚</span>Konu
+    </div>
+    <div class="nav-item" onclick="Nav.go('stats')">
+        <span class="nav-icon">📈</span>Analiz
+    </div>
+    <div class="nav-item" onclick="Nav.go('medals')">
+        <span class="nav-icon">🎖️</span>Rozet
+    </div>
+    <div class="nav-item" onclick="Nav.go('profile')">
+        <span class="nav-icon">👤</span>Profil
+    </div>
+</div>
+
+<div class="toast" id="toast">
+    <span id="t-icon">✅</span>
+    <span id="t-msg">Mesaj</span>
+</div>
+
+<script>
+/**
+ * 🧠 DGS LIFE OS v5.0 (PRODUCTION)
+ * Features: Profile, Medals, PWA, Data Sync, Split Subjects (Mat, Tr, Par)
+ */
+
+var CONFIG = {
+    examDate: "2026-06-30",
+    defaultTargetNet: 70,
+    dailyMin: { time: 60*60, mat: 30, tr: 20, par: 20 }, // Added Par
+    xp: { min: 1, q: 2, topic: 50, page: 5, mission: 100 },
+    storageKey: "DGS_OS_V5"
+};
+
+var DEFAULT_TOPICS = {
+    mat: [
+        "Temel Kavramlar", "Sayı Basamakları", "Bölme Bölünebilme", "Rasyonel Sayılar", 
+        "Basit Eşitsizlikler", "Mutlak Değer", "Üslü Sayılar", "Köklü Sayılar", 
+        "Çarpanlara Ayırma", "Oran Orantı", "Sayı Problemleri", "Kesir Problemleri", 
+        "Yaş Problemleri", "Hareket Problemleri", "Yüzde Kar-Zarar", "Kümeler", 
+        "Fonksiyonlar", "Permütasyon Kombinasyon", "Olasılık", "Sayısal Mantık"
+    ],
+    tr: [
+        "Sözcükte Anlam", "Cümlede Anlam", "Anlatım Bozukluğu", "Sözel Mantık"
+    ],
+    par: [
+        "Paragrafın Anlamı", "Paragrafın Yapısı", "Paragrafta Ana Düşünce", 
+        "Paragrafta Yardımcı Düşünce", "Paragrafta Akış Bozma"
+    ]
+};
+
+var MEDALS_DB = [
+    { id: 'streak7', icon: '🔥', title: 'Haftalık Ateş', req: '7 Gün Zincir', check: function(d){ return d.user.streak >= 7; } },
+    { id: 'streak30', icon: '👑', title: 'İstikrar Kralı', req: '30 Gün Zincir', check: function(d){ return d.user.streak >= 30; } },
+    { id: 'q1000', icon: '✍️', title: 'Soru Canavarı', req: '1000 Soru Çöz', check: function(d){ return (d.stats?.totalQ || 0) >= 1000; } },
+    { id: 'topic5', icon: '📚', title: 'Konu Ustası', req: '5 Konu Bitir', check: function(d){ return d.topics.filter(function(t){return t.status===2}).length >= 5; } }
+];
+
+/* --- 💾 STATE MANAGER --- */
+var State = {
+    data: {
+        user: { xp: 0, diamonds: 100, streak: 0, lastLog: null, name: '', targetUni: '', targetNet: 70 },
+        inventory: { freeze: 0, boost: 0 },
+        today: { date: null, time: 0, mat: 0, tr: 0, par: 0, frozen: false, completed: false },
+        weekly: { start: 0, missions: [] },
+        topics: [], 
+        exams: [],
+        books: [],
+        stats: { totalQ: 0, totalTime: 0 }, // New Global Stats
+        medals: [], // IDs of unlocked medals
+        history: {}
+    },
+
+    init: function() {
+        var s = localStorage.getItem(CONFIG.storageKey);
+        if(s) {
+            try { 
+                var parsed = JSON.parse(s);
+                this.data = Object.assign({}, this.data, parsed);
+                
+                // MIGRATION: Ensure 'par' exists
+                if(typeof this.data.today.par === 'undefined') this.data.today.par = 0;
+                
+                // MIGRATION: Topics
+                var hasPar = this.data.topics.some(function(t){ return t.subject === 'par'; });
+                if(!hasPar) this.seedTopics();
+
+                // MIGRATION: Stats
+                if(!this.data.stats) this.data.stats = { totalQ: 0, totalTime: 0 };
+
+                if(!this.data.weekly || !this.data.weekly.missions) this.resetWeekly();
+            } catch(e){ console.error("Data Load Error", e); }
+        } else {
+            this.seedTopics();
+            this.resetWeekly();
+            document.getElementById('onboarding').classList.remove('hidden');
+        }
+        this.checkDay();
+        Medals.check();
+    },
+
+    seedTopics: function() {
+        var t = this.data.topics || [];
+        var add = function(arr, subj) {
+            arr.forEach(function(n){
+                if(!t.find(function(ex){ return ex.name === n; })) {
+                    t.push({subject:subj, name:n, status:0, q:0});
+                }
+            });
+        };
+        add(DEFAULT_TOPICS.mat, 'mat');
+        add(DEFAULT_TOPICS.tr, 'tr');
+        add(DEFAULT_TOPICS.par, 'par');
+        this.data.topics = t;
+    },
+
+    resetWeekly: function() {
+        this.data.weekly = {
+            start: new Date().getTime(),
+            missions: [
+                { id: 1, text: "5 Saat Çalış", target: 5*60*60, current: 0, type: 'time', claimed: false },
+                { id: 2, text: "200 Soru Çöz", target: 200, current: 0, type: 'q', claimed: false },
+                { id: 3, text: "1 Konu İlerle", target: 1, current: 0, type: 'topic', claimed: false }
+            ]
+        };
+    },
+
+    save: function() {
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(this.data));
+        UI.render();
+    },
+
+    checkDay: function() {
+        var now = new Date().toISOString().split('T')[0];
+        // Weekly Reset Check
+        var oneWeek = 7 * 24 * 60 * 60 * 1000;
+        if(new Date().getTime() - this.data.weekly.start > oneWeek) this.resetWeekly();
+
+        if(this.data.today.date !== now) {
+            if(this.data.today.date) {
+                // Archive yesterday
+                var status = this.data.today.completed ? 'hit' : (this.data.today.frozen ? 'freeze' : 'miss');
+                this.data.history[this.data.today.date] = {
+                    status: status,
+                    time: this.data.today.time,
+                    q: this.data.today.mat + this.data.today.tr + (this.data.today.par || 0)
+                };
+
+                if(status === 'miss' && this.data.user.streak > 0) {
+                    this.data.user.streak = 0;
+                    Notify.send("💔 Zincir Kırıldı", "Dün çalışmadın.");
+                } else if (status === 'hit') {
+                    var s = this.data.user.streak;
+                    if(s % 7 === 0) UI.toast("🏆 " + s + " Günlük Zincir!", "gold");
+                }
+            }
+            this.data.today = { date: now, time: 0, mat: 0, tr: 0, par: 0, frozen: false, completed: false };
+            Notify.send("☀️ Günaydın", "Bugün paragraf çözdün mü?");
+        }
+        this.save();
+    },
+
+    updateMission: function(type, val) {
+        this.data.weekly.missions.forEach(function(m){
+            if(m.type === type && !m.claimed) {
+                m.current += val;
+                if(m.current > m.target) m.current = m.target;
+            }
+        });
+    }
+};
+
+/* --- 🤖 AI & LOGIC --- */
+var AI = {
+    analyze: function() {
+        var today = new Date();
+        var exam = new Date(CONFIG.examDate);
+        var daysLeft = Math.ceil(Math.abs(exam - today) / (1000 * 60 * 60 * 24));
+        
+        // Smart Rec
+        var rec = "Konu tekrarı yap.";
+        var inProg = State.data.topics.filter(function(t){ return t.status === 1; });
+        var todo = State.data.topics.filter(function(t){ return t.status === 0; });
+        
+        // Logic: Prioritize Paragraf if neglected
+        var todayPar = State.data.today.par || 0;
+        if(todayPar < CONFIG.dailyMin.par) {
+            rec = "⚠️ Önce Paragraf Çöz!";
+        } else if(inProg.length > 0) {
+            rec = "Devam et: " + inProg[0].name;
+        } else if(todo.length > 0) {
+            rec = "Yeni Konu: " + todo[0].name;
+        }
+
+        // Readiness Score (0-100)
+        var topicComp = Topics.getStats(); 
+        var streakFactor = Math.min(State.data.user.streak * 2, 20); 
+        var examFactor = 0;
+        var target = State.data.user.targetNet || CONFIG.defaultTargetNet;
+        if(State.data.exams.length > 0) {
+            var lastNet = State.data.exams[State.data.exams.length-1].total;
+            examFactor = Math.min((lastNet / target) * 40, 40); 
+        }
+        var readiness = Math.floor((topicComp * 0.4) + streakFactor + examFactor);
+
+        // Motivational Msg
+        var yesterday = new Date(); yesterday.setDate(today.getDate()-1);
+        var yKey = yesterday.toISOString().split('T')[0];
+        var yData = State.data.history[yKey];
+        var mot = "Disiplin özgürlüktür.";
+        if(yData && yData.time < State.data.today.time) mot = "🔥 Dünden daha iyisin!";
+
+        return { days: daysLeft, rec: rec, msg: mot, score: readiness };
+    }
+};
+
+/* --- 📚 TOPIC MANAGER (UPDATED) --- */
+var Topics = {
+    filterView: 'mat',
+
+    filter: function(subj) {
+        this.filterView = subj;
+        UI.renderTopics();
+    },
+
+    toggle: function(name) {
+        var t = State.data.topics.find(function(i){ return i.name === name; });
+        if(t) {
+            t.status = (t.status + 1) % 3;
+            if(t.status === 2) {
+                State.data.user.xp += CONFIG.xp.topic;
+                State.updateMission('topic', 1);
+                UI.toast("🎉 Konu Bitti! +50 XP", "gold");
+                Medals.check();
+            }
+            if(t.status === 1) State.updateMission('topic', 0.5); 
+            State.save();
+        }
+    },
+
+    addTopicQ: function(name) {
+        var t = State.data.topics.find(function(i){ return i.name === name; });
+        var input = document.getElementById('q-input-' + name.replace(/\s+/g, ''));
+        var val = parseInt(input.value);
+        if(!t || !val || val <= 0) return;
+
+        // Update Topic
+        t.q += val;
+        
+        // Update Daily Subject
+        App.addQ(t.subject, val); // Reuse main logic for XP/Daily Total
+
+        input.value = "";
+        State.save();
+        UI.toast("+" + val + " Soru (Konu: " + t.name + ")");
+    },
+
+    getStats: function() {
+        var total = State.data.topics.length;
+        var done = State.data.topics.filter(function(t){ return t.status === 2; }).length;
+        return Math.floor((done/total)*100);
+    },
+
+    getSubjectStats: function(subj) {
+        var subT = State.data.topics.filter(function(t){ return t.subject === subj; });
+        var done = subT.filter(function(t){ return t.status === 2; }).length;
+        return {
+            pct: Math.floor((done/subT.length)*100) || 0,
+            rem: subT.length - done
+        };
+    }
+};
+
+/* --- 🎖️ MEDALS MANAGER --- */
+var Medals = {
+    check: function() {
+        var unlocked = State.data.medals || [];
+        var newlyUnlocked = false;
+        
+        MEDALS_DB.forEach(function(m){
+            if(!unlocked.includes(m.id)) {
+                if(m.check(State.data)) {
+                    unlocked.push(m.id);
+                    UI.toast("🎖️ ROZET KAZANILDI: " + m.title, "gold");
+                    newlyUnlocked = true;
+                }
+            }
+        });
+        
+        if(newlyUnlocked) {
+            State.data.medals = unlocked;
+            State.save();
+        }
+    }
+};
+
+/* --- 👤 PROFILE MANAGER --- */
+var Profile = {
+    save: function() {
+        State.data.user.name = document.getElementById('prof-name').value;
+        State.data.user.targetUni = document.getElementById('prof-target').value;
+        State.data.user.targetNet = parseInt(document.getElementById('prof-net').value) || 70;
+        State.save();
+        UI.toast("Profil Kaydedildi");
+    },
+    load: function() {
+        if(document.getElementById('prof-name')) {
+            document.getElementById('prof-name').value = State.data.user.name || '';
+            document.getElementById('prof-target').value = State.data.user.targetUni || '';
+            document.getElementById('prof-net').value = State.data.user.targetNet || 70;
+        }
+    }
+};
+
+/* --- 🕹️ MAIN CONTROLLER --- */
+var App = {
+    timer: null,
+    startTime: null,
+
+    toggleFocus: function() {
+        if(this.timer) this.stopFocus();
+        else this.startFocus();
+    },
+
+    startFocus: function() {
+        this.startTime = Date.now();
+        document.getElementById('focus-ui').classList.add('active');
+        document.getElementById('btn-timer').innerText = "BİTİR (KAYDET)";
+        document.getElementById('btn-timer').classList.add('stop');
+        var self = this;
+        this.timer = setInterval(function(){
+            var diff = Math.floor((Date.now() - self.startTime)/1000);
+            document.getElementById('timer-disp').innerText = self.fmtTime(diff);
+        }, 1000);
+    },
+
+    stopFocus: function() {
+        var dur = Math.floor((Date.now() - this.startTime)/1000);
+        if(dur > 60) {
+            State.data.today.time += dur;
+            State.data.user.xp += Math.floor(dur/60) * CONFIG.xp.min;
+            State.data.stats.totalTime += dur; // Global stat
+            State.updateMission('time', dur);
+            this.checkGoal();
+            UI.toast("✅ Kaydedildi: " + Math.floor(dur/60) + "dk");
+            Medals.check();
+        } else {
+            UI.toast("⚠️ Süre çok kısa", "err");
+        }
+        clearInterval(this.timer);
+        this.timer = null;
+        document.getElementById('focus-ui').classList.remove('active');
+        document.getElementById('btn-timer').innerText = "BAŞLAT";
+        document.getElementById('btn-timer').classList.remove('stop');
+        document.getElementById('timer-disp').innerText = "00:00";
+        State.save();
+    },
+
+    addQ: function(type, valIn) {
+        var val = valIn;
+        if(!val) {
+            var el = document.getElementById('inp-' + type);
+            val = parseInt(el.value);
+            if(el) el.value = "";
+        }
+        
+        if(!val || val <= 0) return;
+        
+        // Add to Today
+        if(type === 'mat') State.data.today.mat += val;
+        else if(type === 'tr') State.data.today.tr += val;
+        else if(type === 'par') State.data.today.par += val;
+        
+        // XP & Global
+        State.data.user.xp += val * CONFIG.xp.q;
+        State.data.stats.totalQ += val;
+        State.updateMission('q', val);
+        
+        this.checkGoal();
+        State.save();
+        if(!valIn) UI.toast("+" + val + " Soru"); // Toast only if manual entry
+        Medals.check();
+    },
+
+    addExam: function() {
+        var m = parseFloat(document.getElementById('exam-mat').value);
+        var t = parseFloat(document.getElementById('exam-tr').value);
+        if(isNaN(m)) return;
+        State.data.exams.push({date: new Date().toISOString().split('T')[0], mat: m, tr: t, total: m+t});
+        State.data.user.xp += 100;
+        State.save();
+        UI.toast("📝 Deneme Eklendi!");
+    },
+
+    addBook: function() {
+        var n = document.getElementById('book-name').value;
+        var p = parseInt(document.getElementById('book-pages').value);
+        if(!n || !p) return;
+        State.data.books.unshift({ title: n, pages: p, date: new Date().toLocaleDateString() });
+        State.data.user.xp += p * CONFIG.xp.page;
+        State.save();
+        document.getElementById('book-name').value = "";
+        document.getElementById('book-pages').value = "";
+        UI.toast("📖 Okuma Eklendi! +" + (p*CONFIG.xp.page) + " XP");
+    },
+
+    checkGoal: function() {
+        var t = State.data.today;
+        var r = CONFIG.dailyMin;
+        if(!t.completed && t.time >= r.time && t.mat >= r.mat && t.tr >= r.tr && t.par >= r.par) {
+            t.completed = true;
+            State.data.user.streak++;
+            State.data.user.diamonds += 50;
+            UI.toast("🔥 GÜNLÜK HEDEF TAMAM!", "gold");
+            Notify.send("Tebrikler!", "Zincir devam ediyor.");
+        }
+    },
+
+    tryFreeze: function() {
+        if(State.data.today.completed) return UI.toast("Bugün zaten bitti");
+        if(State.data.inventory.freeze > 0) {
+            if(confirm("Kalkan kullan?")) {
+                State.data.inventory.freeze--;
+                State.data.today.frozen = true;
+                State.save();
+                UI.toast("❄️ Donduruldu");
+            }
+        } else UI.toast("Kalkan yok", "err");
+    },
+
+    fmtTime: function(s) {
+        var m = Math.floor(s/60);
+        var sec = s%60;
+        return (m<10?"0"+m:m) + ":" + (sec<10?"0"+sec:sec);
+    }
+};
+
+/* --- ☁️ DATA MANAGER (MANUAL SYNC) --- */
+var DataMgr = {
+    export: function() {
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(State.data));
+        var node = document.createElement('a');
+        node.setAttribute("href", dataStr);
+        node.setAttribute("download", "dgs_backup.json");
+        document.body.appendChild(node); node.click(); node.remove();
+    },
+    import: function(input) {
+        var file = input.files[0];
+        if(!file) return;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var json = JSON.parse(e.target.result);
+                if(json.user) { State.data = json; State.save(); UI.toast("✅ Veri Yüklendi!"); setTimeout(function(){location.reload()},1000); }
+            } catch(err) { UI.toast("Hatalı Dosya", "err"); }
+        };
+        reader.readAsText(file);
+    },
+    copySyncCode: function() {
+        var code = btoa(JSON.stringify(State.data));
+        navigator.clipboard.writeText(code).then(function() {
+            UI.toast("📋 Kod Kopyalandı!");
+        });
+    },
+    loadSyncCode: function() {
+        var code = document.getElementById('sync-input').value;
+        if(!code) return;
+        try {
+            var json = JSON.parse(atob(code));
+            if(json.user) {
+                State.data = json;
+                State.save();
+                UI.toast("✅ Senkronizasyon Başarılı!");
+                setTimeout(function(){location.reload()}, 1000);
+            }
+        } catch(e) { UI.toast("Geçersiz Kod", "err"); }
+    },
+    reset: function() {
+        if(confirm("HER ŞEY SİLİNECEK?")) {
+            localStorage.removeItem(CONFIG.storageKey);
+            location.reload();
+        }
+    }
+};
+
+/* --- 🎨 UI RENDERER --- */
+var UI = {
+    render: function() {
+        var d = State.data;
+        var t = d.today;
+
+        // HUD
+        document.getElementById('hud-streak').innerText = d.user.streak;
+        document.getElementById('hud-diamonds').innerText = d.user.diamonds;
+        document.getElementById('hud-xp').innerText = d.user.xp;
+        document.getElementById('inv-display').innerText = "🛡️ " + d.inventory.freeze + " | ⚡ " + d.inventory.boost;
+
+        // Progress Bars (3 Subjects)
+        this.setBar('time', t.time, CONFIG.dailyMin.time, 's');
+        this.setBar('mat', t.mat, CONFIG.dailyMin.mat, '');
+        this.setBar('tr', t.tr, CONFIG.dailyMin.tr, '');
+        this.setBar('par', t.par, CONFIG.dailyMin.par, '');
+
+        // AI & Goals
+        var ai = AI.analyze();
+        document.getElementById('ai-message').innerText = ai.msg;
+        document.getElementById('rec-text').innerText = ai.rec;
+        document.getElementById('ai-score').innerText = ai.score + "%";
+        document.getElementById('ai-days').innerText = ai.days;
+
+        // Topic Stats
+        var mStat = Topics.getSubjectStats('mat');
+        var tStat = Topics.getSubjectStats('tr');
+        var pStat = Topics.getSubjectStats('par');
+        
+        document.getElementById('stat-mat-pct').innerText = mStat.pct + "%";
+        document.getElementById('stat-tr-pct').innerText = tStat.pct + "%";
+        document.getElementById('stat-par-pct').innerText = pStat.pct + "%";
+        
+        this.renderMissions();
+        this.renderTopics();
+        this.drawGraph();
+        this.drawCalendar();
+        this.renderBooks();
+        this.renderMedals();
+        Profile.load();
+    },
+
+    renderMissions: function() {
+        var list = document.getElementById('missions-list');
+        list.innerHTML = "";
+        State.data.weekly.missions.forEach(function(m){
+            var pct = Math.min(100, (m.current / m.target) * 100);
+            var displayCurr = m.type === 'time' ? Math.floor(m.current/60) : Math.floor(m.current);
+            var displayTarg = m.type === 'time' ? Math.floor(m.target/60) + 'dk' : m.target;
+            
+            var html = '<div class="mission-item">' +
+                '<div class="mission-head"><span>' + m.text + '</span><span>' + displayCurr + '/' + displayTarg + '</span></div>' +
+                '<div class="mission-bar"><div class="mission-fill" style="width:' + pct + '%"></div></div>' +
+                '</div>';
+            list.innerHTML += html;
+        });
+    },
+
+    renderBooks: function() {
+        var list = document.getElementById('book-list');
+        list.innerHTML = "";
+        State.data.books.slice(0,5).forEach(function(b){
+            list.innerHTML += "<div>📖 " + b.title + " (" + b.pages + " syf)</div>";
+        });
+    },
+
+    renderTopics: function() {
+        var list = document.getElementById('topics-list');
+        list.innerHTML = "";
+        var filtered = State.data.topics.filter(function(t){ return t.subject === Topics.filterView; });
+        filtered.forEach(function(t) {
+            var statusClass = t.status === 2 ? 'done' : (t.status === 1 ? 'in-progress' : '');
+            var icon = t.status === 2 ? '✓' : (t.status === 1 ? '►' : '');
+            
+            // Generate clean ID for input
+            var inputId = 'q-input-' + t.name.replace(/[^a-zA-Z0-9]/g, ''); 
+            
+            var html = '<div class="topic-item ' + statusClass + '">' +
+                '<div class="topic-header" onclick="Topics.toggle(\'' + t.name + '\')">' +
+                    '<div><div class="topic-name">' + t.name + '</div><div class="topic-stats">Çözülen: ' + t.q + '</div></div>' +
+                    '<div class="topic-check-btn">' + icon + '</div>' +
+                '</div>' +
+                // NEW: Topic Question Entry
+                '<div class="topic-controls">' +
+                    '<input type="number" id="' + inputId + '" class="topic-input" placeholder="+Soru">' +
+                    '<div class="topic-add-btn" onclick="Topics.addTopicQ(\'' + t.name + '\')">+</div>' +
+                '</div>' +
+                '</div>';
+            list.innerHTML += html;
+        });
+    },
+
+    renderMedals: function() {
+        var list = document.getElementById('medal-container');
+        list.innerHTML = "";
+        var unlocked = State.data.medals || [];
+        
+        MEDALS_DB.forEach(function(m){
+            var isUnlocked = unlocked.includes(m.id);
+            var cls = isUnlocked ? 'unlocked' : '';
+            var html = '<div class="medal-card ' + cls + '">' +
+                '<span class="medal-icon">' + m.icon + '</span>' +
+                '<div class="medal-title">' + m.title + '</div>' +
+                '<div class="medal-desc">' + m.req + '</div>' +
+                '</div>';
+            list.innerHTML += html;
+        });
+    },
+
+    setBar: function(id, val, max, type) {
+        var el = document.getElementById('fill-' + id);
+        var txt = document.getElementById('prog-txt-' + id);
+        var pct = Math.min(100, (val/max)*100);
+        el.style.width = pct + "%";
+        txt.innerText = (type==='s' ? Math.floor(val/60) : val) + "/" + (type==='s' ? max/60 : max);
+    },
+
+    drawGraph: function() {
+        var con = document.getElementById('net-graph');
+        var exams = State.data.exams;
+        if(exams.length < 2) return con.innerHTML = "<div style='text-align:center; padding-top:40px; color:#444; font-size:0.7rem;'>Grafik için 2 deneme gir.</div>";
+
+        var w = con.clientWidth;
+        var h = con.clientHeight;
+        var max = 0; exams.forEach(function(e){ if(e.total > max) max = e.total; });
+        max = Math.max(max, State.data.user.targetNet);
+        var points = "";
+        
+        exams.forEach(function(e, i) {
+            var x = i * (w / (exams.length - 1));
+            var y = h - ((e.total / max) * h);
+            points += x + "," + y + " ";
+        });
+        
+        con.innerHTML = '<svg><polyline points="' + points + '" stroke="var(--primary)" fill="none"/><polyline points="0,' + (h - (State.data.user.targetNet/max)*h) + ' ' + w + ',' + (h - (State.data.user.targetNet/max)*h) + '" stroke="var(--purple)" stroke-dasharray="4" opacity="0.5"/></svg>';
+    },
+
+    drawCalendar: function() {
+        var el = document.getElementById('cal-render');
+        el.innerHTML = "";
+        var hist = State.data.history;
+        var todayKey = State.data.today.date;
+        var d = new Date();
+        for(var i=13; i>=0; i--) {
+            var temp = new Date();
+            temp.setDate(d.getDate() - i);
+            var k = temp.toISOString().split('T')[0];
+            
+            var hItem = hist[k];
+            var status = '';
+            if(k === todayKey) {
+                status = State.data.today.completed ? 'hit' : 'today';
+            } else if(hItem) {
+                status = hItem.status;
+            }
+
+            var clickData = hItem ? JSON.stringify(hItem).replace(/"/g, '&quot;') : '';
+            var clickAction = hItem ? 'onclick="UI.showDayDetail(this)" data-info="' + clickData + '"' : '';
+
+            el.innerHTML += '<div class="cal-cell ' + status + '" ' + clickAction + '>' + temp.getDate() + '</div>';
+        }
+    },
+
+    showDayDetail: function(el) {
+        var data = el.getAttribute('data-info');
+        if(!data) return;
+        try {
+            var obj = JSON.parse(data);
+            UI.toast("⏱️ " + Math.floor(obj.time/60) + "dk | ✏️ " + obj.q + " Soru");
+        } catch(e){}
+    },
+
+    closeOnboarding: function() {
+        document.getElementById('onboarding').classList.add('hidden');
+    },
+
+    toast: function(msg, type) {
+        var t = document.getElementById('toast');
+        var i = document.getElementById('t-icon');
+        document.getElementById('t-msg').innerText = msg;
+        i.innerText = type === 'err' ? '⚠️' : (type === 'gold' ? '💎' : '✅');
+        t.style.borderColor = type === 'err' ? 'var(--danger)' : '#444';
+        t.classList.add('visible');
+        setTimeout(function(){ t.classList.remove('visible'); }, 3000);
+    }
+};
+
+/* --- 🔔 NOTIFICATIONS --- */
+var Notify = {
+    req: function() {
+        if (!("Notification" in window)) return UI.toast("Tarayıcı desteklemiyor", "err");
+        Notification.requestPermission().then(function(p) {
+            if(p === "granted") UI.toast("Bildirimler Açık");
+        });
+    },
+    send: function(title, body) {
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(title, { body: body });
+        }
+    }
+};
+
+/* --- 🧭 NAV --- */
+var Nav = {
+    go: function(id) {
+        document.querySelectorAll('.view').forEach(function(e){ e.classList.add('hidden'); });
+        document.getElementById('view-' + id).classList.remove('hidden');
+        document.querySelectorAll('.nav-item').forEach(function(e){ e.classList.remove('active'); });
+        
+        var idx = id==='dash'?0 : id==='topics'?1 : id==='stats'?2 : id==='medals'?3 : 4;
+        document.querySelectorAll('.nav-item')[idx].classList.add('active');
+        
+        if(id === 'topics') UI.renderTopics();
+        if(id === 'stats') { UI.drawGraph(); UI.renderBooks(); }
+        if(id === 'medals') UI.renderMedals();
+    }
+};
+
+// PWA: Inject Manifest Dynamically for Add to Homescreen
+var link = document.createElement('link');
+link.rel = 'manifest';
+var manifest = {
+    name: "DGS Life OS", short_name: "DGS OS", start_url: ".", display: "standalone",
+    background_color: "#000000", theme_color: "#000000",
+    icons: [{ src: "https://cdn-icons-png.flaticon.com/512/2997/2997235.png", sizes: "192x192", type: "image/png" }]
+};
+link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest));
+document.head.appendChild(link);
+
+window.onload = function() { State.init(); UI.render(); };
+</script>
+</body>
+</html>
