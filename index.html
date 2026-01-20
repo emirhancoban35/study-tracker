@@ -7,7 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2997/2997235.png"> <title>DGS LIFE OS v5.0</title>
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzExMTExMSIvPjxyZWN0IHg9IjEyOCIgeT0iMTI4IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNjc2IiBzdHJva2Utd2lkdGg9IjMyIi8+PHBhdGggZD0iTTM1NiAxOTIgTDIzNiAzMjAgMTU2IDI0MCIgc3Ryb2tlPSIjMDBlNjc2IiBzdHJva2Utd2lkdGg9IjMyIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=">
+    <title>DGS LIFE OS v5.3</title>
     
     <style>
         /* 🌌 SYSTEM THEME: DEEP SPACE & NEON */
@@ -17,10 +18,10 @@
             --bg-panel: #1a1a1a;
             --primary: #00e676; /* Math */
             --secondary: #2979ff; /* Turkish */
-            --tertiary: #ff9100; /* Paragraf (NEW) */
-            --danger: #ff1744; /* Alert/Break */
+            --tertiary: #ff9100; /* Paragraf */
+            --danger: #ff1744; /* Alert */
             --gold: #ffc400; /* Economy */
-            --purple: #d500f9; /* AI/Books */
+            --purple: #d500f9; /* AI */
             --text-main: #ffffff;
             --text-muted: #888888;
             --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -31,8 +32,6 @@
         /* RESET & BASE */
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background: var(--bg-body); color: var(--text-main); font-family: var(--font); min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; }
-        
-        /* 📱 LAYOUT UTILS */
         .hidden { display: none !important; }
         .container { padding: 16px; max-width: 600px; margin: 0 auto; }
         .flex-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -40,49 +39,41 @@
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         
-        /* 🎴 CARDS */
         .card { background: var(--bg-card); border-radius: var(--radius); padding: 16px; border: 1px solid #222; box-shadow: var(--shadow); position: relative; overflow: hidden; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .card-title { font-weight: 700; font-size: 0.95rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
         
-        /* 💎 STAT HEADER */
         .hud { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
         .hud-item { background: var(--bg-panel); border-radius: 12px; padding: 10px; text-align: center; border-bottom: 2px solid transparent; }
         .hud-val { font-size: 1.1rem; font-weight: 900; display: block; }
         .hud-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
         
-        /* 🤖 AI & GOALS */
         .ai-msg { background: rgba(213, 0, 249, 0.1); border-left: 3px solid var(--purple); padding: 10px; font-size: 0.85rem; color: #e0e0e0; border-radius: 4px; line-height: 1.4; margin-bottom: 10px; }
         .goal-bar { height: 6px; background: #222; border-radius: 3px; overflow: hidden; margin-top: 5px; }
         .goal-fill { height: 100%; transition: width 0.5s ease; }
         
-        /* ⏱️ FOCUS MODE */
         .focus-ring { width: 200px; height: 200px; border-radius: 50%; border: 4px solid #222; margin: 20px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; transition: 0.3s; }
         .focus-ring.active { border-color: var(--primary); box-shadow: 0 0 40px rgba(0, 230, 118, 0.2); }
         .timer-val { font-size: 3.5rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -2px; }
         .timer-state { font-size: 0.8rem; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; opacity: 0; }
         .focus-ring.active .timer-state { opacity: 1; animation: pulse 1.5s infinite; }
         
-        /* 📈 GRAPHS */
         .graph-container { height: 100px; width: 100%; position: relative; border-bottom: 1px solid #333; border-left: 1px solid #333; margin-top: 10px; }
         svg { width: 100%; height: 100%; overflow: visible; }
         polyline { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
         
-        /* 🧭 NAVIGATION */
         .nav-dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 420px; background: rgba(26,26,26,0.95); backdrop-filter: blur(12px); border-radius: 24px; display: flex; justify-content: space-between; padding: 10px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 100; border: 1px solid rgba(255,255,255,0.1); }
         .nav-icon { font-size: 1.4rem; opacity: 0.5; transition: 0.2s; transform: scale(0.9); display: block; margin-bottom: 2px;}
         .nav-item { flex: 1; text-align: center; font-size: 0.6rem; color: #888; }
         .nav-item.active .nav-icon { opacity: 1; transform: scale(1.1); text-shadow: 0 0 10px rgba(255,255,255,0.3); color: var(--primary); }
         .nav-item.active { color: #fff; }
         
-        /* 🧩 INPUTS & BUTTONS */
         button { border: none; cursor: pointer; font-family: var(--font); }
         .btn-main { background: var(--primary); color: #000; width: 100%; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
         .btn-main.stop { background: var(--danger); color: #fff; }
         .btn-small { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; background: #333; color: #fff; }
         .input-dark { background: #000; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; width: 100%; font-size: 0.9rem; }
         
-        /* 📅 CALENDAR */
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
         .cal-cell { aspect-ratio: 1; border-radius: 4px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; background: #1a1a1a; color: #555; position: relative; }
         .cal-cell.today { border: 1px solid #fff; }
@@ -90,7 +81,6 @@
         .cal-cell.miss { background: rgba(255, 23, 68, 0.1); color: var(--danger); }
         .cal-cell.freeze { background: rgba(41, 121, 255, 0.2); color: var(--secondary); }
         
-        /* 📚 TOPIC TRACKING (UPDATED) */
         .topic-item { background: #161616; padding: 12px; border-radius: 12px; margin-bottom: 8px; border-left: 3px solid #333; transition: 0.2s; }
         .topic-item.done { border-left-color: var(--primary); opacity: 0.8; }
         .topic-item.in-progress { border-left-color: var(--gold); }
@@ -102,7 +92,6 @@
         .topic-check-btn { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #444; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; margin-left: 5px; cursor: pointer; }
         .topic-item.done .topic-check-btn { background: var(--primary); border-color: var(--primary); color: #000; }
 
-        /* 🎖️ MEDALS (NEW) */
         .medal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .medal-card { background: #161616; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #222; opacity: 0.5; filter: grayscale(1); transition: 0.3s; }
         .medal-card.unlocked { opacity: 1; filter: grayscale(0); border-color: var(--gold); background: rgba(255, 193, 7, 0.05); }
@@ -110,28 +99,27 @@
         .medal-title { font-size: 0.8rem; font-weight: bold; color: #fff; }
         .medal-desc { font-size: 0.65rem; color: #888; margin-top: 2px; }
 
-        /* 🏆 MISSIONS */
         .mission-item { background: #0a0a0a; border: 1px solid #222; padding: 10px; border-radius: 8px; margin-bottom: 8px; }
         .mission-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; }
         .mission-bar { height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
         .mission-fill { height: 100%; background: var(--gold); transition: width 0.3s; }
         
-        /* 🚀 ONBOARDING MODAL */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; backdrop-filter: blur(10px); }
         .modal.hidden { display: none; }
         .modal h1 { font-size: 2rem; color: var(--primary); margin-bottom: 20px; }
         .modal p { color: #ccc; margin-bottom: 30px; line-height: 1.5; }
 
-        /* ⚙️ SETTINGS */
         .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222; }
         .setting-label { font-size: 0.9rem; }
-        .setting-group { margin-top: 20px; }
-        .setting-group-title { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
 
-        /* ANIMATIONS */
+        /* GOAL LIST STYLE */
+        .goal-list-item { background: #161616; padding: 10px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
+        .goal-list-info { font-size: 0.85rem; color: #fff; }
+        .goal-list-net { font-size: 0.75rem; color: var(--primary); font-weight: bold; }
+        .goal-del-btn { color: var(--danger); background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0 5px; }
+
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         
-        /* 🔔 TOAST */
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: #222; border: 1px solid #444; padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 10px; opacity: 0; transition: 0.3s; z-index: 3000; pointer-events: none; }
         .toast.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
@@ -172,12 +160,25 @@
             
             <div style="display: flex; gap: 5px; margin-top: 10px;">
                 <div style="flex:1; background:#000; padding:8px; border-radius:8px; text-align:center;">
-                    <div style="font-size:0.7rem; color:#666;">HAZIRLIK SKORU</div>
-                    <div style="font-weight:bold; color:var(--primary); font-size:1.1rem;" id="ai-score">0%</div>
+                    <div style="font-size:0.7rem; color:#666;">MEVCUT NET</div>
+                    <div style="font-weight:bold; color:var(--primary); font-size:1.1rem;" id="ai-score">0</div>
                 </div>
                 <div style="flex:1; background:#000; padding:8px; border-radius:8px; text-align:center;">
                     <div style="font-size:0.7rem; color:#666;">KALAN GÜN</div>
                     <div style="font-weight:bold; color:#fff; font-size:1.1rem;" id="ai-days">0</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px; background:#0a0a0a; padding:10px; border-radius:8px;">
+                <div class="flex-row" style="margin-bottom: 5px;">
+                    <span style="font-size:0.7rem; color:#aaa;">🎯 HEDEFLERİM</span>
+                    <span style="font-size:0.8rem; font-weight:bold; color:#fff; cursor:pointer;" onclick="Nav.go('profile')">DÜZENLE ⚙️</span>
+                </div>
+                
+                <div id="dynamic-goals-container">
+                    <div style="text-align:center; padding:10px; font-size:0.8rem; color:#666;">
+                        Henüz hedef eklenmedi.<br>Profil sekmesinden ekle.
+                    </div>
                 </div>
             </div>
 
@@ -224,7 +225,7 @@
                     <div class="goal-bar"><div class="goal-fill" id="fill-mat" style="width:0%; background:var(--primary)"></div></div>
                     <div class="flex-row" style="margin-top:4px;">
                         <input type="number" id="inp-mat" class="input-dark" placeholder="Adet" style="padding:4px; font-size:0.8rem;">
-                        <button onclick="App.addQ('math')" style="background:#222; color:var(--primary); padding:4px 10px; border-radius:6px;">+</button>
+                        <button onclick="App.addQ('mat')" style="background:#222; color:var(--primary); padding:4px 10px; border-radius:6px;">+</button>
                     </div>
                 </div>
                 <div>
@@ -319,21 +320,29 @@
     <div id="view-medals" class="view hidden">
         <div class="card">
             <div class="card-header"><span class="card-title">🎖️ Başarı Rozetleri</span></div>
-            <div class="medal-grid" id="medal-container">
-                </div>
+            <div class="medal-grid" id="medal-container"></div>
         </div>
     </div>
 
     <div id="view-profile" class="view hidden">
+        
+        <div class="card" style="margin-bottom:12px;">
+            <div class="card-header"><span class="card-title">🎯 Hedef Yönetimi</span></div>
+            <div class="flex-col">
+                <div class="flex-row">
+                    <input type="text" id="new-goal-name" class="input-dark" placeholder="Örn: ODTÜ Bilgisayar">
+                    <input type="number" id="new-goal-net" class="input-dark" placeholder="Net" style="width: 80px;">
+                </div>
+                <button class="btn-small" onclick="Goals.add()">+ Hedef Ekle</button>
+            </div>
+            <div id="goals-management-list" class="flex-col" style="margin-top:15px;">
+                </div>
+        </div>
+
         <div class="card">
             <div class="card-header"><span class="card-title">👤 Öğrenci Profili</span></div>
             <div class="flex-col">
                 <input type="text" id="prof-name" class="input-dark" placeholder="Adın" onchange="Profile.save()">
-                <input type="text" id="prof-target" class="input-dark" placeholder="Hedef Üniversite / Bölüm" onchange="Profile.save()">
-                <div class="flex-row">
-                    <input type="number" id="prof-net" class="input-dark" placeholder="Hedef Net" onchange="Profile.save()">
-                    <div style="font-size:0.8rem; color:#666; padding:10px;">Net Hedefi</div>
-                </div>
             </div>
         </div>
 
@@ -386,21 +395,11 @@
 </div>
 
 <div class="nav-dock">
-    <div class="nav-item active" onclick="Nav.go('dash')">
-        <span class="nav-icon">🏠</span>Ana
-    </div>
-    <div class="nav-item" onclick="Nav.go('topics')">
-        <span class="nav-icon">📚</span>Konu
-    </div>
-    <div class="nav-item" onclick="Nav.go('stats')">
-        <span class="nav-icon">📈</span>Analiz
-    </div>
-    <div class="nav-item" onclick="Nav.go('medals')">
-        <span class="nav-icon">🎖️</span>Rozet
-    </div>
-    <div class="nav-item" onclick="Nav.go('profile')">
-        <span class="nav-icon">👤</span>Profil
-    </div>
+    <div class="nav-item active" onclick="Nav.go('dash')"><span class="nav-icon">🏠</span>Ana</div>
+    <div class="nav-item" onclick="Nav.go('topics')"><span class="nav-icon">📚</span>Konu</div>
+    <div class="nav-item" onclick="Nav.go('stats')"><span class="nav-icon">📈</span>Analiz</div>
+    <div class="nav-item" onclick="Nav.go('medals')"><span class="nav-icon">🎖️</span>Rozet</div>
+    <div class="nav-item" onclick="Nav.go('profile')"><span class="nav-icon">👤</span>Profil</div>
 </div>
 
 <div class="toast" id="toast">
@@ -410,14 +409,13 @@
 
 <script>
 /**
- * 🧠 DGS LIFE OS v5.0 (PRODUCTION)
- * Features: Profile, Medals, PWA, Data Sync, Split Subjects (Mat, Tr, Par)
+ * 🧠 DGS LIFE OS v5.3 (DYNAMIC GOALS)
+ * Fixed Book Medals Logic + Multi-Target System
  */
 
 var CONFIG = {
     examDate: "2026-06-30",
-    defaultTargetNet: 70,
-    dailyMin: { time: 60*60, mat: 30, tr: 20, par: 20 }, // Added Par
+    dailyMin: { time: 60*60, mat: 30, tr: 20, par: 20 },
     xp: { min: 1, q: 2, topic: 50, page: 5, mission: 100 },
     storageKey: "DGS_OS_V5"
 };
@@ -439,25 +437,45 @@ var DEFAULT_TOPICS = {
     ]
 };
 
+// HELPER: Count Total Pages Read
+function getTotalPages(d) {
+    if(!d.books || d.books.length === 0) return 0;
+    var sum = 0;
+    d.books.forEach(function(b){ sum += (b.pages || 0); });
+    return sum;
+}
+
+// 2️⃣ Badge Logic Fixed for PAGE COUNT
 var MEDALS_DB = [
     { id: 'streak7', icon: '🔥', title: 'Haftalık Ateş', req: '7 Gün Zincir', check: function(d){ return d.user.streak >= 7; } },
     { id: 'streak30', icon: '👑', title: 'İstikrar Kralı', req: '30 Gün Zincir', check: function(d){ return d.user.streak >= 30; } },
+    { id: 'streak60', icon: '⚡', title: '60 Gün Efsanesi', req: '60 Gün Zincir', check: function(d){ return d.user.streak >= 60; } },
+    { id: 'q100', icon: '🐣', title: 'Başlangıç', req: '100 Soru Çöz', check: function(d){ return (d.stats?.totalQ || 0) >= 100; } },
     { id: 'q1000', icon: '✍️', title: 'Soru Canavarı', req: '1000 Soru Çöz', check: function(d){ return (d.stats?.totalQ || 0) >= 1000; } },
-    { id: 'topic5', icon: '📚', title: 'Konu Ustası', req: '5 Konu Bitir', check: function(d){ return d.topics.filter(function(t){return t.status===2}).length >= 5; } }
+    { id: 'q5000', icon: '🧠', title: 'Soru Makinesi', req: '5000 Soru Çöz', check: function(d){ return (d.stats?.totalQ || 0) >= 5000; } },
+    { id: 'topic5', icon: '📚', title: 'Konu Ustası', req: '5 Konu Bitir', check: function(d){ return d.topics.filter(function(t){return t.status===2}).length >= 5; } },
+    // BOOK MEDALS FIXED TO PAGES
+    { id: 'bookworm1', icon: '🐛', title: 'Kitap Kurdu I', req: 'Top. 200 Sayfa Oku', check: function(d){ return getTotalPages(d) >= 200; } },
+    { id: 'bookworm5', icon: '📖', title: 'Kitap Kurdu II', req: 'Top. 1000 Sayfa Oku', check: function(d){ return getTotalPages(d) >= 1000; } },
+    { id: 'exam1', icon: '📝', title: 'İlk Deneme', req: '1 Deneme Çöz', check: function(d){ return d.exams.length >= 1; } },
+    { id: 'exam10', icon: '🦁', title: 'Deneme Canavarı', req: '10 Deneme Çöz', check: function(d){ return d.exams.length >= 10; } },
+    { id: 'focus10h', icon: '⏳', title: 'Odak Tanrısı', req: '10 Saat Odaklan', check: function(d){ return (d.stats?.totalTime || 0) >= 10 * 3600; } },
+    { id: 'early_bird', icon: '🌅', title: 'Erken Kalkan', req: '08:00\'den önce başla', check: function(d){ return false; } },
+    { id: 'night_owl', icon: '🦉', title: 'Gece Kuşu', req: '22:00\'den sonra çalış', check: function(d){ return false; } }
 ];
 
 /* --- 💾 STATE MANAGER --- */
 var State = {
     data: {
-        user: { xp: 0, diamonds: 100, streak: 0, lastLog: null, name: '', targetUni: '', targetNet: 70 },
+        user: { xp: 0, diamonds: 100, streak: 0, lastLog: null, name: '', goals: [] },
         inventory: { freeze: 0, boost: 0 },
         today: { date: null, time: 0, mat: 0, tr: 0, par: 0, frozen: false, completed: false },
         weekly: { start: 0, missions: [] },
         topics: [], 
         exams: [],
         books: [],
-        stats: { totalQ: 0, totalTime: 0 }, // New Global Stats
-        medals: [], // IDs of unlocked medals
+        stats: { totalQ: 0, totalTime: 0 },
+        medals: [],
         history: {}
     },
 
@@ -467,17 +485,12 @@ var State = {
             try { 
                 var parsed = JSON.parse(s);
                 this.data = Object.assign({}, this.data, parsed);
-                
-                // MIGRATION: Ensure 'par' exists
+                // Ensure goals array exists
+                if(!this.data.user.goals) this.data.user.goals = [];
                 if(typeof this.data.today.par === 'undefined') this.data.today.par = 0;
-                
-                // MIGRATION: Topics
                 var hasPar = this.data.topics.some(function(t){ return t.subject === 'par'; });
                 if(!hasPar) this.seedTopics();
-
-                // MIGRATION: Stats
                 if(!this.data.stats) this.data.stats = { totalQ: 0, totalTime: 0 };
-
                 if(!this.data.weekly || !this.data.weekly.missions) this.resetWeekly();
             } catch(e){ console.error("Data Load Error", e); }
         } else {
@@ -522,13 +535,11 @@ var State = {
 
     checkDay: function() {
         var now = new Date().toISOString().split('T')[0];
-        // Weekly Reset Check
         var oneWeek = 7 * 24 * 60 * 60 * 1000;
         if(new Date().getTime() - this.data.weekly.start > oneWeek) this.resetWeekly();
 
         if(this.data.today.date !== now) {
             if(this.data.today.date) {
-                // Archive yesterday
                 var status = this.data.today.completed ? 'hit' : (this.data.today.frozen ? 'freeze' : 'miss');
                 this.data.history[this.data.today.date] = {
                     status: status,
@@ -545,7 +556,9 @@ var State = {
                 }
             }
             this.data.today = { date: now, time: 0, mat: 0, tr: 0, par: 0, frozen: false, completed: false };
-            Notify.send("☀️ Günaydın", "Bugün paragraf çözdün mü?");
+            
+            var name = State.data.user.name || "Kral";
+            Notify.send("☀️ Günaydın " + name, "Bugün paragraf çözdün mü?");
         }
         this.save();
     },
@@ -560,6 +573,38 @@ var State = {
     }
 };
 
+/* --- 🎯 GOALS MANAGER (NEW) --- */
+var Goals = {
+    add: function() {
+        var name = document.getElementById('new-goal-name').value;
+        var net = parseFloat(document.getElementById('new-goal-net').value);
+        
+        if(!name || isNaN(net) || net <= 0) return UI.toast("Geçerli bir hedef girin", "err");
+        if(State.data.user.goals.length >= 7) return UI.toast("Max 7 hedef sınırı!", "err");
+        
+        State.data.user.goals.push({ name: name, net: net });
+        // Sort by Net Desc (Highest First)
+        State.data.user.goals.sort(function(a,b){ return b.net - a.net });
+        
+        State.save();
+        document.getElementById('new-goal-name').value = '';
+        document.getElementById('new-goal-net').value = '';
+        UI.toast("Hedef Eklendi!");
+    },
+    
+    remove: function(index) {
+        if(confirm("Bu hedef silinsin mi?")) {
+            State.data.user.goals.splice(index, 1);
+            State.save();
+        }
+    },
+    
+    getColors: function(index) {
+        var colors = ['var(--primary)', 'var(--secondary)', 'var(--tertiary)', 'var(--gold)', 'var(--purple)'];
+        return colors[index % colors.length];
+    }
+};
+
 /* --- 🤖 AI & LOGIC --- */
 var AI = {
     analyze: function() {
@@ -567,12 +612,10 @@ var AI = {
         var exam = new Date(CONFIG.examDate);
         var daysLeft = Math.ceil(Math.abs(exam - today) / (1000 * 60 * 60 * 24));
         
-        // Smart Rec
         var rec = "Konu tekrarı yap.";
         var inProg = State.data.topics.filter(function(t){ return t.status === 1; });
         var todo = State.data.topics.filter(function(t){ return t.status === 0; });
         
-        // Logic: Prioritize Paragraf if neglected
         var todayPar = State.data.today.par || 0;
         if(todayPar < CONFIG.dailyMin.par) {
             rec = "⚠️ Önce Paragraf Çöz!";
@@ -582,29 +625,45 @@ var AI = {
             rec = "Yeni Konu: " + todo[0].name;
         }
 
-        // Readiness Score (0-100)
         var topicComp = Topics.getStats(); 
         var streakFactor = Math.min(State.data.user.streak * 2, 20); 
         var examFactor = 0;
-        var target = State.data.user.targetNet || CONFIG.defaultTargetNet;
+        
+        var currentNet = 0;
         if(State.data.exams.length > 0) {
             var lastNet = State.data.exams[State.data.exams.length-1].total;
+            currentNet = lastNet;
+            // Base Readiness on Primary Goal (if exists), else 70
+            var target = State.data.user.goals.length > 0 ? State.data.user.goals[0].net : 70;
             examFactor = Math.min((lastNet / target) * 40, 40); 
         }
         var readiness = Math.floor((topicComp * 0.4) + streakFactor + examFactor);
 
-        // Motivational Msg
         var yesterday = new Date(); yesterday.setDate(today.getDate()-1);
         var yKey = yesterday.toISOString().split('T')[0];
         var yData = State.data.history[yKey];
         var mot = "Disiplin özgürlüktür.";
         if(yData && yData.time < State.data.today.time) mot = "🔥 Dünden daha iyisin!";
 
-        return { days: daysLeft, rec: rec, msg: mot, score: readiness };
+        var name = State.data.user.name || "Kral";
+        var dynamicMsg = "Merhaba " + name + ". ";
+
+        // Dynamic Goal Feedback
+        if (State.data.user.goals.length > 0) {
+            var primary = State.data.user.goals[0];
+            var gap = primary.net - currentNet;
+            if(gap > 0) dynamicMsg += "Birincil hedefin " + primary.name + " için " + gap.toFixed(1) + " net daha gerekli. ";
+            else dynamicMsg += "Birincil hedefine (" + primary.name + ") ulaştın! ";
+        } else {
+            dynamicMsg += "Henüz hedef belirlemedin. ";
+        }
+        dynamicMsg += mot;
+
+        return { days: daysLeft, rec: rec, msg: dynamicMsg, score: readiness, currentNet: currentNet };
     }
 };
 
-/* --- 📚 TOPIC MANAGER (UPDATED) --- */
+/* --- 📚 TOPIC MANAGER --- */
 var Topics = {
     filterView: 'mat',
 
@@ -630,16 +689,12 @@ var Topics = {
 
     addTopicQ: function(name) {
         var t = State.data.topics.find(function(i){ return i.name === name; });
-        var input = document.getElementById('q-input-' + name.replace(/\s+/g, ''));
+        var input = document.getElementById('q-input-' + name.replace(/[^a-zA-Z0-9]/g, ''));
         var val = parseInt(input.value);
         if(!t || !val || val <= 0) return;
 
-        // Update Topic
         t.q += val;
-        
-        // Update Daily Subject
-        App.addQ(t.subject, val); // Reuse main logic for XP/Daily Total
-
+        App.addQ(t.subject, val); 
         input.value = "";
         State.save();
         UI.toast("+" + val + " Soru (Konu: " + t.name + ")");
@@ -661,7 +716,7 @@ var Topics = {
     }
 };
 
-/* --- 🎖️ MEDALS MANAGER --- */
+/* --- 🎖️ MEDALS --- */
 var Medals = {
     check: function() {
         var unlocked = State.data.medals || [];
@@ -671,7 +726,8 @@ var Medals = {
             if(!unlocked.includes(m.id)) {
                 if(m.check(State.data)) {
                     unlocked.push(m.id);
-                    UI.toast("🎖️ ROZET KAZANILDI: " + m.title, "gold");
+                    State.data.user.xp += 500; // XP Reward
+                    UI.toast("🎖️ ROZET: " + m.title + " (+500 XP)", "gold");
                     newlyUnlocked = true;
                 }
             }
@@ -684,21 +740,18 @@ var Medals = {
     }
 };
 
-/* --- 👤 PROFILE MANAGER --- */
+/* --- 👤 PROFILE --- */
 var Profile = {
     save: function() {
         State.data.user.name = document.getElementById('prof-name').value;
-        State.data.user.targetUni = document.getElementById('prof-target').value;
-        State.data.user.targetNet = parseInt(document.getElementById('prof-net').value) || 70;
         State.save();
         UI.toast("Profil Kaydedildi");
     },
     load: function() {
         if(document.getElementById('prof-name')) {
             document.getElementById('prof-name').value = State.data.user.name || '';
-            document.getElementById('prof-target').value = State.data.user.targetUni || '';
-            document.getElementById('prof-net').value = State.data.user.targetNet || 70;
         }
+        UI.renderGoalsManager();
     }
 };
 
@@ -729,7 +782,7 @@ var App = {
         if(dur > 60) {
             State.data.today.time += dur;
             State.data.user.xp += Math.floor(dur/60) * CONFIG.xp.min;
-            State.data.stats.totalTime += dur; // Global stat
+            State.data.stats.totalTime += dur;
             State.updateMission('time', dur);
             this.checkGoal();
             UI.toast("✅ Kaydedildi: " + Math.floor(dur/60) + "dk");
@@ -750,25 +803,25 @@ var App = {
         var val = valIn;
         if(!val) {
             var el = document.getElementById('inp-' + type);
-            val = parseInt(el.value);
-            if(el) el.value = "";
+            if (el) {
+                val = parseInt(el.value);
+                el.value = "";
+            }
         }
         
         if(!val || val <= 0) return;
         
-        // Add to Today
         if(type === 'mat') State.data.today.mat += val;
         else if(type === 'tr') State.data.today.tr += val;
         else if(type === 'par') State.data.today.par += val;
         
-        // XP & Global
         State.data.user.xp += val * CONFIG.xp.q;
         State.data.stats.totalQ += val;
         State.updateMission('q', val);
         
         this.checkGoal();
         State.save();
-        if(!valIn) UI.toast("+" + val + " Soru"); // Toast only if manual entry
+        if(!valIn) UI.toast("+" + val + " Soru"); 
         Medals.check();
     },
 
@@ -780,6 +833,7 @@ var App = {
         State.data.user.xp += 100;
         State.save();
         UI.toast("📝 Deneme Eklendi!");
+        Medals.check();
     },
 
     addBook: function() {
@@ -792,6 +846,7 @@ var App = {
         document.getElementById('book-name').value = "";
         document.getElementById('book-pages').value = "";
         UI.toast("📖 Okuma Eklendi! +" + (p*CONFIG.xp.page) + " XP");
+        Medals.check();
     },
 
     checkGoal: function() {
@@ -802,7 +857,8 @@ var App = {
             State.data.user.streak++;
             State.data.user.diamonds += 50;
             UI.toast("🔥 GÜNLÜK HEDEF TAMAM!", "gold");
-            Notify.send("Tebrikler!", "Zincir devam ediyor.");
+            var name = State.data.user.name || "Kral";
+            Notify.send("Tebrikler " + name + "!", "Zincir devam ediyor.");
         }
     },
 
@@ -825,9 +881,9 @@ var App = {
     }
 };
 
-/* --- ☁️ DATA MANAGER (MANUAL SYNC) --- */
+/* --- ☁️ DATA MANAGER --- */
 var DataMgr = {
-    export: function() {
+    backup: function() {
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(State.data));
         var node = document.createElement('a');
         node.setAttribute("href", dataStr);
@@ -847,7 +903,8 @@ var DataMgr = {
         reader.readAsText(file);
     },
     copySyncCode: function() {
-        var code = btoa(JSON.stringify(State.data));
+        var str = JSON.stringify(State.data);
+        var code = window.btoa(unescape(encodeURIComponent(str)));
         navigator.clipboard.writeText(code).then(function() {
             UI.toast("📋 Kod Kopyalandı!");
         });
@@ -856,7 +913,8 @@ var DataMgr = {
         var code = document.getElementById('sync-input').value;
         if(!code) return;
         try {
-            var json = JSON.parse(atob(code));
+            var str = decodeURIComponent(escape(window.atob(code)));
+            var json = JSON.parse(str);
             if(json.user) {
                 State.data = json;
                 State.save();
@@ -885,7 +943,7 @@ var UI = {
         document.getElementById('hud-xp').innerText = d.user.xp;
         document.getElementById('inv-display').innerText = "🛡️ " + d.inventory.freeze + " | ⚡ " + d.inventory.boost;
 
-        // Progress Bars (3 Subjects)
+        // Progress Bars
         this.setBar('time', t.time, CONFIG.dailyMin.time, 's');
         this.setBar('mat', t.mat, CONFIG.dailyMin.mat, '');
         this.setBar('tr', t.tr, CONFIG.dailyMin.tr, '');
@@ -907,13 +965,68 @@ var UI = {
         document.getElementById('stat-tr-pct').innerText = tStat.pct + "%";
         document.getElementById('stat-par-pct').innerText = pStat.pct + "%";
         
+        // 5️⃣ DASHBOARD DYNAMIC GOALS
+        this.renderDashboardGoals(ai.currentNet);
+        
         this.renderMissions();
         this.renderTopics();
         this.drawGraph();
         this.drawCalendar();
         this.renderBooks();
         this.renderMedals();
-        Profile.load();
+        
+        // Only load profile if active to save redraws, but renderGoalsManager needs to run if profile open
+        if (!document.getElementById('view-profile').classList.contains('hidden')) {
+            Profile.load();
+        }
+    },
+
+    renderDashboardGoals: function(currentNet) {
+        var container = document.getElementById('dynamic-goals-container');
+        if (!container) return; // Safety
+        
+        var goals = State.data.user.goals || [];
+        
+        if (goals.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:10px; font-size:0.8rem; color:#666;">Henüz hedef eklenmedi.<br>Profil sekmesinden ekle.</div>';
+            return;
+        }
+
+        var html = '';
+        goals.forEach(function(g, idx){
+            var color = Goals.getColors(idx);
+            var gap = g.net - currentNet;
+            var pct = Math.min(100, (currentNet / g.net) * 100);
+            var statusText = gap > 0 ? gap.toFixed(1) + " net kaldı" : "Hedef Yakalandı! 🎉";
+            
+            html += '<div style="margin-bottom:8px;">' +
+                    '<div style="display:flex; justify-content:space-between; font-size:0.7rem; margin-bottom:2px;">' +
+                        '<span style="color:' + color + ';">' + g.name + '</span>' +
+                        '<span style="color:#666;">' + statusText + '</span>' +
+                    '</div>' +
+                    '<div class="goal-bar"><div class="goal-fill" style="width:' + pct + '%; background:' + color + '"></div></div>' +
+                    '</div>';
+        });
+        
+        // Update total net display at top of card
+        document.getElementById('ai-score').innerText = currentNet + " Net";
+        container.innerHTML = html;
+    },
+
+    renderGoalsManager: function() {
+        var list = document.getElementById('goals-management-list');
+        if(!list) return;
+        var goals = State.data.user.goals || [];
+        var html = '';
+        goals.forEach(function(g, i){
+            html += '<div class="goal-list-item">' +
+                '<span class="goal-list-info">' + (i+1) + '. ' + g.name + '</span>' +
+                '<div>' +
+                    '<span class="goal-list-net">' + g.net + ' Net</span>' +
+                    '<button class="goal-del-btn" onclick="Goals.remove(' + i + ')">×</button>' +
+                '</div></div>';
+        });
+        list.innerHTML = html;
     },
 
     renderMissions: function() {
@@ -947,8 +1060,6 @@ var UI = {
         filtered.forEach(function(t) {
             var statusClass = t.status === 2 ? 'done' : (t.status === 1 ? 'in-progress' : '');
             var icon = t.status === 2 ? '✓' : (t.status === 1 ? '►' : '');
-            
-            // Generate clean ID for input
             var inputId = 'q-input-' + t.name.replace(/[^a-zA-Z0-9]/g, ''); 
             
             var html = '<div class="topic-item ' + statusClass + '">' +
@@ -956,7 +1067,6 @@ var UI = {
                     '<div><div class="topic-name">' + t.name + '</div><div class="topic-stats">Çözülen: ' + t.q + '</div></div>' +
                     '<div class="topic-check-btn">' + icon + '</div>' +
                 '</div>' +
-                // NEW: Topic Question Entry
                 '<div class="topic-controls">' +
                     '<input type="number" id="' + inputId + '" class="topic-input" placeholder="+Soru">' +
                     '<div class="topic-add-btn" onclick="Topics.addTopicQ(\'' + t.name + '\')">+</div>' +
@@ -970,15 +1080,10 @@ var UI = {
         var list = document.getElementById('medal-container');
         list.innerHTML = "";
         var unlocked = State.data.medals || [];
-        
         MEDALS_DB.forEach(function(m){
             var isUnlocked = unlocked.includes(m.id);
             var cls = isUnlocked ? 'unlocked' : '';
-            var html = '<div class="medal-card ' + cls + '">' +
-                '<span class="medal-icon">' + m.icon + '</span>' +
-                '<div class="medal-title">' + m.title + '</div>' +
-                '<div class="medal-desc">' + m.req + '</div>' +
-                '</div>';
+            var html = '<div class="medal-card ' + cls + '"><span class="medal-icon">' + m.icon + '</span><div class="medal-title">' + m.title + '</div><div class="medal-desc">' + m.req + '</div></div>';
             list.innerHTML += html;
         });
     },
@@ -998,8 +1103,12 @@ var UI = {
 
         var w = con.clientWidth;
         var h = con.clientHeight;
-        var max = 0; exams.forEach(function(e){ if(e.total > max) max = e.total; });
-        max = Math.max(max, State.data.user.targetNet);
+        
+        // Dynamic Graph Scaling based on Primary Goal
+        var max = 70; 
+        if (State.data.user.goals.length > 0) max = State.data.user.goals[0].net;
+        
+        exams.forEach(function(e){ if(e.total > max) max = e.total; });
         var points = "";
         
         exams.forEach(function(e, i) {
@@ -1021,7 +1130,6 @@ var UI = {
             var temp = new Date();
             temp.setDate(d.getDate() - i);
             var k = temp.toISOString().split('T')[0];
-            
             var hItem = hist[k];
             var status = '';
             if(k === todayKey) {
@@ -1029,10 +1137,8 @@ var UI = {
             } else if(hItem) {
                 status = hItem.status;
             }
-
             var clickData = hItem ? JSON.stringify(hItem).replace(/"/g, '&quot;') : '';
             var clickAction = hItem ? 'onclick="UI.showDayDetail(this)" data-info="' + clickData + '"' : '';
-
             el.innerHTML += '<div class="cal-cell ' + status + '" ' + clickAction + '>' + temp.getDate() + '</div>';
         }
     },
@@ -1071,7 +1177,8 @@ var Notify = {
     },
     send: function(title, body) {
         if ("Notification" in window && Notification.permission === "granted") {
-            new Notification(title, { body: body });
+            var name = State.data.user.name ? State.data.user.name + ", " : "";
+            new Notification(title, { body: name + body });
         }
     }
 };
@@ -1089,10 +1196,11 @@ var Nav = {
         if(id === 'topics') UI.renderTopics();
         if(id === 'stats') { UI.drawGraph(); UI.renderBooks(); }
         if(id === 'medals') UI.renderMedals();
+        if(id === 'profile') Profile.load(); // Load Profile & Goals
     }
 };
 
-// PWA: Inject Manifest Dynamically for Add to Homescreen
+// PWA: Dynamically Inject Manifest
 var link = document.createElement('link');
 link.rel = 'manifest';
 var manifest = {
@@ -1100,7 +1208,7 @@ var manifest = {
     background_color: "#000000", theme_color: "#000000",
     icons: [{ src: "https://cdn-icons-png.flaticon.com/512/2997/2997235.png", sizes: "192x192", type: "image/png" }]
 };
-link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest));
+link.href = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(manifest))));
 document.head.appendChild(link);
 
 window.onload = function() { State.init(); UI.render(); };
